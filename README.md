@@ -7,49 +7,44 @@ Loja simples full-stack para o usuário final: catálogo de produtos, carrinho, 
 | Camada | Tecnologia | Descrição |
 |--------|------------|-----------|
 | App | Flutter 3.12+ | Interface do cliente (login, produtos, carrinho, perfil) |
-| API | .NET 10 Minimal API | Toda a lógica em um único [`Program.cs`](LittleStoreBackend/Program.cs) |
+| API | .NET 10 Minimal API | REST monolítica com JWT, carrinho, pedidos e favoritos |
 | Banco | SQLite + EF Core | Migrations automáticas; arquivo `little_store.db` |
 
-## Estrutura do repositório
+## Estrutura do monorepo
 
 ```
 little_store/
-├── LittleStoreBackend/          # API REST (.NET)
-│   ├── Program.cs               # Entidades, DbContext, JWT, endpoints
-│   ├── appsettings.json
-│   └── Migrations/
-└── little_store_app/            # App Flutter
-    ├── lib/
-    │   ├── main.dart
-    │   └── src/
-    │       ├── common/          # DI, rotas, HTTP, storage, patterns
-    │       └── features/        # auth, products, cart, checkout, profile, orders, favorites, settings
-    └── REFERENCE_CODE.md        # Padrões de arquitetura do app
+├── LittleStoreBackend/     → [README do backend](LittleStoreBackend/README.md)
+└── little_store_app/       → [README do app](little_store_app/README.md)
 ```
+
+Documentação complementar:
+
+| Documento | Conteúdo |
+|-----------|----------|
+| [`little_store_app/README.md`](little_store_app/README.md) | Arquitetura Flutter, testes, coverage, screenshots |
+| [`LittleStoreBackend/README.md`](LittleStoreBackend/README.md) | Pacotes, migrations, execução e URLs da API |
+| [`little_store_app/REFERENCE_CODE.md`](little_store_app/REFERENCE_CODE.md) | Padrões de código do app |
 
 ## Pré-requisitos
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - [Flutter 3.12+](https://flutter.dev/docs/get-started/install)
 
-## Como rodar
+## Quick start
 
-### Backend
+### 1. Backend
 
 ```bash
 cd LittleStoreBackend
 dotnet run
 ```
 
-| Recurso | URL |
-|---------|-----|
-| API | `http://localhost:5064` |
-| Scalar (documentação interativa) | `http://localhost:5064/scalar/v1` |
-| OpenAPI JSON | `http://localhost:5064/openapi/v1.json` |
+A API sobe em `http://localhost:5064`. O banco é criado/atualizado automaticamente via EF Core migrations, com produtos de exemplo.
 
-O banco `little_store.db` é criado/atualizado via **EF Core migrations** na inicialização, com produtos de exemplo.
+Para migrations, pacotes e documentação interativa (Scalar), consulte [`LittleStoreBackend/README.md`](LittleStoreBackend/README.md).
 
-### App Flutter
+### 2. App Flutter
 
 ```bash
 cd little_store_app
@@ -57,43 +52,44 @@ flutter pub get
 flutter run
 ```
 
-**Base URL da API por plataforma** (configurada em `api_constant.dart`):
+> O backend deve estar em execução antes de usar o app.
+
+Para arquitetura, testes e coverage, consulte [`little_store_app/README.md`](little_store_app/README.md).
+
+## Integração app ↔ API
+
+Base URL configurada em `little_store_app/lib/src/common/constants/api_constant.dart`:
 
 | Plataforma | URL |
 |------------|-----|
 | Web / Desktop / iOS | `http://localhost:5064` |
 | Android Emulator | `http://10.0.2.2:5064` |
 
-> O backend deve estar em execução antes de usar o app.
+O app consome a API REST do backend. Endpoints, autenticação e schema do banco estão documentados no [README do backend](LittleStoreBackend/README.md) e na interface Scalar (`http://localhost:5064/scalar/v1`).
 
-## Funcionalidades do app
+## Funcionalidades
 
 ### Autenticação
-- Cadastro e login
-- JWT + refresh token (renovação automática via `HttpService`)
-- Logout (revoga refresh token no servidor)
+- Cadastro, login e logout
+- Sessão com JWT + refresh token
 
 ### Produtos
 - Grid com busca por nome ou descrição
-- **Detalhe do produto** (toque no card): descrição completa, preço, datas
-- Adicionar ao carrinho (grid ou detalhe)
-- **Favoritar / remover favorito** no detalhe (ícone coração e botão)
+- Detalhe do produto (toque no card)
+- Adicionar ao carrinho e favoritar
 
 ### Carrinho e checkout
-- Ícone do carrinho na AppBar com **badge** de quantidade
-- Alterar quantidade, remover itens
-- Checkout com resumo e confirmação da compra
+- Badge de quantidade na AppBar
+- Alterar quantidade, remover itens e finalizar compra
 
 ### Perfil
-- Nome, e-mail e **cliente desde** (data de cadastro)
-- **Minhas compras** — histórico com **data da compra**
-- **Favoritos** — lista de produtos favoritados
-- Configurações (tema escuro) e **Sair**
+- Dados do usuário e data de cadastro
+- Minhas compras (histórico com data da compra)
+- Favoritos e configurações (tema escuro)
 
 ### Navegação
-- Via **AppBar** (sem bottom navigation)
-- Produtos → carrinho (badge) / perfil
-- Demais telas com botão voltar
+- Via AppBar (sem bottom navigation)
+- Produtos → carrinho / perfil; demais telas com botão voltar
 
 ## Fluxo do usuário
 
@@ -115,90 +111,30 @@ flowchart TD
 
 1. Cadastre-se ou faça login
 2. Navegue pelos produtos (busca opcional)
-3. Toque em um produto para ver **detalhes** e **favoritar**
+3. Toque em um produto para ver detalhes e favoritar
 4. Adicione itens ao carrinho e finalize a compra
-5. Consulte **Minhas compras** (com data) e **Favoritos** no perfil
+5. Consulte Minhas compras e Favoritos no perfil
 6. Saia quando desejar
 
-## API resumida
+## Examples of commits
 
-Endpoints protegidos exigem header `Authorization: Bearer {accessToken}`.
-
-### Auth (público)
-
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| POST | `/auth/register` | Cadastro `{ name, email, password }` |
-| POST | `/auth/login` | Login `{ email, password }` |
-| POST | `/auth/refresh` | Renovar tokens `{ refreshToken }` |
-| POST | `/auth/logout` | Revogar refresh token |
-| GET | `/auth/me` | Perfil do usuário logado |
-
-### Produtos (autenticado)
-
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| GET | `/products?search=` | Listar / buscar |
-| GET | `/products/{id}` | Detalhe |
-| POST | `/products` | Criar |
-| PUT | `/products/{id}` | Atualizar |
-| DELETE | `/products/{id}` | Remover |
-
-### Carrinho (autenticado)
-
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| GET | `/cart` | Listar itens + total |
-| POST | `/cart/items` | Adicionar `{ productId, quantity }` |
-| PUT | `/cart/items/{id}` | Atualizar quantidade |
-| DELETE | `/cart/items/{id}` | Remover item |
-| DELETE | `/cart` | Esvaziar carrinho |
-
-### Pedidos (autenticado)
-
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| GET | `/orders` | Histórico (id, total, status, createdAt) |
-| GET | `/orders/{id}` | Detalhe com itens |
-| POST | `/orders/checkout` | Finalizar compra a partir do carrinho |
-
-### Favoritos (autenticado)
-
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| GET | `/favorites` | Listar produtos favoritos |
-| GET | `/favorites/{productId}` | Verificar `{ isFavorite }` |
-| POST | `/favorites` | Adicionar `{ productId }` |
-| DELETE | `/favorites/{productId}` | Remover favorito |
-
-## Banco de dados (SQLite)
-
-| Tabela | Campos principais |
-|--------|-------------------|
-| `Users` | id, name, email, password (BCrypt), createdAt |
-| `Products` | id, name, description, price, createdAt, updatedAt |
-| `CartItems` | id, userId, productId, quantity, createdAt |
-| `Orders` | id, userId, total, status, createdAt |
-| `OrderItems` | id, orderId, productId, productName, quantity, unitPrice |
-| `Favorites` | id, userId, productId, createdAt |
-| `RefreshTokens` | id, userId, token, expiresAt, revokedAt |
-
-## Arquitetura do app Flutter
-
-- **Feature-first:** cada funcionalidade em `lib/src/features/{nome}/` com `models`, `repositories`, `view_models`, `views`, `routes`
-- **State management:** `ChangeNotifier` customizado (`StateManagement`, `AppState`, `Result`)
-- **DI:** GetIt (`dependency_injector.dart`)
-- **Rotas:** go_router com redirect por JWT
-- **HTTP:** Dio com interceptor de refresh token
-- **Convenção de UI:** callbacks `onPressed` / `onTap` sempre como `() { ... }`
-
-Consulte [`little_store_app/REFERENCE_CODE.md`](little_store_app/REFERENCE_CODE.md) para exemplos e padrões detalhados.
-
-## Backend
-
-- **Minimal API monolítica:** entidades, `DbContext`, serviços JWT e todos os endpoints estão em [`LittleStoreBackend/Program.cs`](LittleStoreBackend/Program.cs)
-- **Scalar** disponível em Development para testar a API
-- **CORS** habilitado para integração com Flutter web/mobile
+```
+git add . && git commit -m ":rocket: Initial commit." && git push
+git add . && git commit -m ":building_construction: Added initial project architecture." && git push
+git add . && git commit -m ":building_construction: Update project architecture." && git push
+git add . && git commit -m ":memo: Updated project documentation." && git push
+git add . && git commit -m ":memo: Updated code documentation." && git push
+git add . && git commit -m ":white_check_mark: Added feature xyz." && git push
+git add . && git commit -m ":wrench: Fixed xyz usage." && git push
+git add . && git commit -m ":heavy_minus_sign: Removed xyz." && git push
+git add . && git commit -m ":memo: Adjusted project imports." && git push
+git add . && git commit -m ":arrow_up: Updated dependencies." && git push
+git add . && git commit -m ":arrow_down: Removed dependencies." && git push
+git add . && git commit -m ":wastebasket: Removed unused code." && git push
+git add . && git commit -m ":test_tube: Added test functionality xyz." && git push
+git add . && git commit -m ":construction_worker: Building in progress." && git push
+git add . && git commit -m ":construction_worker: Added CI build system." && git push
+```
 
 ## License
 
