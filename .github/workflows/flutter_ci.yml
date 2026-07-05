@@ -1,32 +1,32 @@
 name: Flutter CI
 
-on:
-  push:
-    branches: [main]
-    paths:
-      - 'little_store_app/**'
-      - '.github/workflows/flutter_ci.yml'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'little_store_app/**'
+on: [push]
 
 defaults:
   run:
     working-directory: little_store_app
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: subosito/flutter-action@v2
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
         with:
-          channel: stable
-          cache: true
+          flutter-version: "3.44.2"
+          channel: "stable"
 
-      - run: flutter pub get
+      - name: 📦 Install dependencies
+        run: flutter pub get
 
-      - name: Run settings tests
-        run: flutter test test/features/settings --coverage
+      # - name: 🧠 Analyze code # Ignored for now.
+      #   run: flutter analyze
+
+      - name: 🧪 Run unit and integration tests
+        run: flutter test --coverage
+
+      # - name: 📦 Build APK Release
+      #   run: flutter build apk --release
