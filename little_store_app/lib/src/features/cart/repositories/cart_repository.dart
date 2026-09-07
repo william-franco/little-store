@@ -5,8 +5,8 @@ import 'package:little_store_app/src/common/services/http_service.dart';
 import 'package:little_store_app/src/features/cart/exceptions/cart_exception.dart';
 import 'package:little_store_app/src/features/cart/models/cart_model.dart';
 
-typedef CartResult = Result<CartModel, CartException>;
-typedef CartActionResult = Result<void, CartException>;
+typedef CartResult = ResultPattern<CartModel, CartException>;
+typedef CartActionResult = ResultPattern<void, CartException>;
 
 abstract interface class CartRepository {
   Future<CartResult> getCart();

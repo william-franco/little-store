@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:little_store_app/src/common/dependency_injectors/dependency_injector.dart';
-import 'package:little_store_app/src/common/patterns/app_state_pattern.dart';
+import 'package:little_store_app/src/common/patterns/state_pattern.dart';
 import 'package:little_store_app/src/common/state_management/state_management.dart';
 import 'package:little_store_app/src/features/favorites/view_models/favorite_view_model.dart';
 import 'package:little_store_app/src/features/products/view_models/product_view_model.dart';

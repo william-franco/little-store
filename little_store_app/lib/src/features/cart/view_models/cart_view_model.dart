@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:little_store_app/src/common/patterns/app_state_pattern.dart';
+import 'package:little_store_app/src/common/patterns/state_pattern.dart';
 import 'package:little_store_app/src/common/state_management/state_management.dart';
 import 'package:little_store_app/src/features/cart/exceptions/cart_exception.dart';
 import 'package:little_store_app/src/features/cart/models/cart_model.dart';
 import 'package:little_store_app/src/features/cart/repositories/cart_repository.dart';
 
-typedef CartState = AppState<CartModel, CartException>;
+typedef CartState = StatePattern<CartModel, CartException>;
 
 typedef _ViewModel = StateManagement<CartState>;
 

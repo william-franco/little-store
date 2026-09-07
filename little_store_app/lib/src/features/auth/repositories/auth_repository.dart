@@ -7,7 +7,7 @@ import 'package:little_store_app/src/common/services/storage_service.dart';
 import 'package:little_store_app/src/features/auth/exceptions/auth_exception.dart';
 import 'package:little_store_app/src/features/auth/models/auth_model.dart';
 
-typedef AuthResult = Result<AuthModel, AuthException>;
+typedef AuthResult = ResultPattern<AuthModel, AuthException>;
 
 abstract interface class AuthRepository {
   Future<AuthResult> register({

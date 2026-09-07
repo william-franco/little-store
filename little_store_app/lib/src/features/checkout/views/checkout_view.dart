@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:little_store_app/src/common/patterns/app_state_pattern.dart';
+import 'package:little_store_app/src/common/patterns/state_pattern.dart';
 import 'package:little_store_app/src/features/checkout/exceptions/checkout_exception.dart';
 import 'package:little_store_app/src/features/checkout/models/order_summary_model.dart';
 import 'package:little_store_app/src/features/checkout/routes/checkout_routes.dart';

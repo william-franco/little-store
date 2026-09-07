@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:little_store_app/src/common/patterns/app_state_pattern.dart';
+import 'package:little_store_app/src/common/patterns/state_pattern.dart';
 import 'package:little_store_app/src/common/state_management/state_management.dart';
 import 'package:little_store_app/src/features/products/exceptions/product_exception.dart';
 import 'package:little_store_app/src/features/products/models/product_model.dart';
 import 'package:little_store_app/src/features/products/repositories/product_repository.dart';
 
-typedef ProductsState = AppState<List<ProductModel>, ProductException>;
+typedef ProductsState = StatePattern<List<ProductModel>, ProductException>;
 
 typedef _ViewModel = StateManagement<ProductsState>;
 

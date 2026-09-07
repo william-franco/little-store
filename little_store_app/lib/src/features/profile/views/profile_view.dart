@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:little_store_app/src/common/patterns/app_state_pattern.dart';
+import 'package:little_store_app/src/common/patterns/state_pattern.dart';
 import 'package:little_store_app/src/common/state_management/state_management.dart';
 import 'package:little_store_app/src/features/auth/routes/auth_routes.dart';
 import 'package:little_store_app/src/features/auth/view_models/auth_view_model.dart';

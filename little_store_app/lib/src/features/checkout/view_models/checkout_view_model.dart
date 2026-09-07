@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
-import 'package:little_store_app/src/common/patterns/app_state_pattern.dart';
+import 'package:little_store_app/src/common/patterns/state_pattern.dart';
 import 'package:little_store_app/src/common/state_management/state_management.dart';
 import 'package:little_store_app/src/features/cart/models/cart_model.dart';
 import 'package:little_store_app/src/features/checkout/exceptions/checkout_exception.dart';
 import 'package:little_store_app/src/features/checkout/models/order_summary_model.dart';
 import 'package:little_store_app/src/features/checkout/repositories/checkout_repository.dart';
 
-typedef CheckoutPreviewState = AppState<CartModel, CheckoutException>;
-typedef CheckoutCompleteState = AppState<OrderSummaryModel, CheckoutException>;
+typedef CheckoutPreviewState = StatePattern<CartModel, CheckoutException>;
+typedef CheckoutCompleteState = StatePattern<OrderSummaryModel, CheckoutException>;
 
 typedef _PreviewViewModel = StateManagement<CheckoutPreviewState>;
 

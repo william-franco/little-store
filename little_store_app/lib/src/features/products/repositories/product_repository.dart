@@ -5,8 +5,8 @@ import 'package:little_store_app/src/common/services/http_service.dart';
 import 'package:little_store_app/src/features/products/exceptions/product_exception.dart';
 import 'package:little_store_app/src/features/products/models/product_model.dart';
 
-typedef ProductsResult = Result<List<ProductModel>, ProductException>;
-typedef ProductActionResult = Result<void, ProductException>;
+typedef ProductsResult = ResultPattern<List<ProductModel>, ProductException>;
+typedef ProductActionResult = ResultPattern<void, ProductException>;
 
 abstract interface class ProductRepository {
   Future<ProductsResult> findProducts({String? search});

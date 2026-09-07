@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:little_store_app/src/common/patterns/app_state_pattern.dart';
+import 'package:little_store_app/src/common/patterns/state_pattern.dart';
 import 'package:little_store_app/src/common/state_management/state_management.dart';
 import 'package:little_store_app/src/features/profile/exceptions/profile_exception.dart';
 import 'package:little_store_app/src/features/profile/models/profile_model.dart';
 import 'package:little_store_app/src/features/profile/repositories/profile_repository.dart';
 
-typedef ProfileState = AppState<ProfileModel, ProfileException>;
+typedef ProfileState = StatePattern<ProfileModel, ProfileException>;
 
 typedef _ViewModel = StateManagement<ProfileState>;
 

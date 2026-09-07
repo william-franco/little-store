@@ -6,8 +6,8 @@ import 'package:little_store_app/src/features/cart/models/cart_model.dart';
 import 'package:little_store_app/src/features/checkout/exceptions/checkout_exception.dart';
 import 'package:little_store_app/src/features/checkout/models/order_summary_model.dart';
 
-typedef CartPreviewResult = Result<CartModel, CheckoutException>;
-typedef CheckoutResult = Result<OrderSummaryModel, CheckoutException>;
+typedef CartPreviewResult = ResultPattern<CartModel, CheckoutException>;
+typedef CheckoutResult = ResultPattern<OrderSummaryModel, CheckoutException>;
 
 abstract interface class CheckoutRepository {
   Future<CartPreviewResult> getCartPreview();

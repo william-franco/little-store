@@ -5,9 +5,9 @@ import 'package:little_store_app/src/common/services/http_service.dart';
 import 'package:little_store_app/src/features/favorites/exceptions/favorite_exception.dart';
 import 'package:little_store_app/src/features/products/models/product_model.dart';
 
-typedef FavoritesResult = Result<List<ProductModel>, FavoriteException>;
-typedef FavoriteActionResult = Result<void, FavoriteException>;
-typedef IsFavoriteResult = Result<bool, FavoriteException>;
+typedef FavoritesResult = ResultPattern<List<ProductModel>, FavoriteException>;
+typedef FavoriteActionResult = ResultPattern<void, FavoriteException>;
+typedef IsFavoriteResult = ResultPattern<bool, FavoriteException>;
 
 abstract interface class FavoriteRepository {
   Future<FavoritesResult> findAllFavorites();

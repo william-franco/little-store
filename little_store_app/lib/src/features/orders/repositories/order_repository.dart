@@ -6,8 +6,8 @@ import 'package:little_store_app/src/features/checkout/models/order_summary_mode
 import 'package:little_store_app/src/features/orders/exceptions/order_exception.dart';
 import 'package:little_store_app/src/features/orders/models/order_list_model.dart';
 
-typedef OrdersResult = Result<List<OrderListModel>, OrderException>;
-typedef OrderDetailResult = Result<OrderSummaryModel, OrderException>;
+typedef OrdersResult = ResultPattern<List<OrderListModel>, OrderException>;
+typedef OrderDetailResult = ResultPattern<OrderSummaryModel, OrderException>;
 
 abstract interface class OrderRepository {
   Future<OrdersResult> findAllOrders();

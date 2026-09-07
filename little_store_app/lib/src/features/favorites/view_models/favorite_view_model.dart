@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:little_store_app/src/common/patterns/app_state_pattern.dart';
+import 'package:little_store_app/src/common/patterns/state_pattern.dart';
 import 'package:little_store_app/src/common/state_management/state_management.dart';
 import 'package:little_store_app/src/features/favorites/exceptions/favorite_exception.dart';
 import 'package:little_store_app/src/features/favorites/repositories/favorite_repository.dart';
 import 'package:little_store_app/src/features/products/models/product_model.dart';
 
-typedef FavoritesState = AppState<List<ProductModel>, FavoriteException>;
+typedef FavoritesState = StatePattern<List<ProductModel>, FavoriteException>;
 
 typedef _ViewModel = StateManagement<FavoritesState>;
 

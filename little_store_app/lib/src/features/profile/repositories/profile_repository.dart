@@ -5,7 +5,7 @@ import 'package:little_store_app/src/common/services/http_service.dart';
 import 'package:little_store_app/src/features/profile/exceptions/profile_exception.dart';
 import 'package:little_store_app/src/features/profile/models/profile_model.dart';
 
-typedef ProfileResult = Result<ProfileModel, ProfileException>;
+typedef ProfileResult = ResultPattern<ProfileModel, ProfileException>;
 
 abstract interface class ProfileRepository {
   Future<ProfileResult> getProfile();
