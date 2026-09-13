@@ -1,12 +1,47 @@
 # Little Store App
 
-Flutter client for the Little Store e-commerce app.
+Flutter storefront client for the Little Store e-commerce backend (catalog, cart, checkout, profile).
+
+Auth, products, favorites, and orders live in separate feature modules with MVVM-style view models.
+
+Repositories call the REST API; shared services handle tokens, routing, and app-wide state patterns.
+
+Designed to pair with the .NET Minimal API in the monorepo while remaining a standalone Flutter package.
+
+Includes settings, checkout flows, and reusable widgets aligned with the other portfolio apps.
+
+## Structure
+
+```mermaid
+flowchart TB
+  Routes --> ProductRoutes
+  Routes --> AuthRoutes
+  Routes --> CartRoutes
+  subgraph catalog [products]
+    ProductRoutes --> ProductViewModel
+    ProductViewModel --> ProductRepository
+  end
+  subgraph commerce [cart and checkout]
+    CartRoutes --> CartViewModel
+    CartViewModel --> CartRepository
+    CartRoutes --> CheckoutRoutes
+    CheckoutRoutes --> CheckoutViewModel
+    CheckoutViewModel --> CheckoutRepository
+  end
+  ProductRepository --> HttpService
+  CartRepository --> HttpService
+  CheckoutRepository --> HttpService
+  AuthRoutes --> AuthViewModel
+  AuthViewModel --> AuthRepository
+  AuthRepository --> HttpService
+  HttpService --> LittleStoreApi[Little Store API]
+```
 
 ## Stack
 
 | Technology | Version |
 |------------|---------|
-| Dart SDK | ^3.13.2 |
+| Dart SDK | ^3.13.3 |
 | connectivity_plus | ^7.1.1 |
 | cupertino_icons | ^1.0.8 |
 | dio | ^5.9.2 |

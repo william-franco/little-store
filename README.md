@@ -15,16 +15,15 @@ Loja simples full-stack para o usuário final: catálogo de produtos, carrinho, 
 ```
 little_store/
 ├── LittleStoreBackend/     → [README do backend](LittleStoreBackend/README.md)
-└── little_store_app/       → [README do app](little_store_app/README.md)
+└── little-store-app/       → [README do app](little-store-app/README.md)
 ```
 
 Documentação complementar:
 
 | Documento | Conteúdo |
 |-----------|----------|
-| [`little_store_app/README.md`](little_store_app/README.md) | Arquitetura Flutter, testes, coverage, screenshots |
+| [`little-store-app/README.md`](little-store-app/README.md) | Arquitetura Flutter, testes, coverage, screenshots |
 | [`LittleStoreBackend/README.md`](LittleStoreBackend/README.md) | Pacotes, migrations, execução e URLs da API |
-| [`little_store_app/REFERENCE_CODE.md`](little_store_app/REFERENCE_CODE.md) | Padrões de código do app |
 
 ## Pré-requisitos
 
@@ -47,18 +46,18 @@ Para migrations, pacotes e documentação interativa (Scalar), consulte [`Little
 ### 2. App Flutter
 
 ```bash
-cd little_store_app
+cd little-store-app
 flutter pub get
 flutter run
 ```
 
 > O backend deve estar em execução antes de usar o app.
 
-Para arquitetura, testes e coverage, consulte [`little_store_app/README.md`](little_store_app/README.md).
+Para arquitetura, testes e coverage, consulte [`little-store-app/README.md`](little-store-app/README.md).
 
 ## Integração app ↔ API
 
-Base URL configurada em `little_store_app/lib/src/common/constants/api_constant.dart`:
+Base URL configurada em `little-store-app/lib/src/common/constants/api_constant.dart`:
 
 | Plataforma | URL |
 |------------|-----|
