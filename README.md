@@ -39,7 +39,7 @@ cd LittleStoreBackend
 dotnet run
 ```
 
-A API sobe em `http://localhost:5064`. O banco é criado/atualizado automaticamente via EF Core migrations, com produtos de exemplo.
+A API REST sobe em `http://localhost:5064/api/v1`. O banco é criado/atualizado automaticamente via EF Core migrations, com produtos de exemplo.
 
 Para migrations, pacotes e documentação interativa (Scalar), consulte [`LittleStoreBackend/README.md`](LittleStoreBackend/README.md).
 
@@ -61,10 +61,10 @@ Base URL configurada em `little-store-app/lib/src/common/constants/api_constant.
 
 | Plataforma | URL |
 |------------|-----|
-| Web / Desktop / iOS | `http://localhost:5064` |
-| Android Emulator | `http://10.0.2.2:5064` |
+| Web / Desktop / iOS | `http://localhost:5064/api/v1` |
+| Android Emulator | `http://10.0.2.2:5064/api/v1` |
 
-O app consome a API REST do backend. Endpoints, autenticação e schema do banco estão documentados no [README do backend](LittleStoreBackend/README.md) e na interface Scalar (`http://localhost:5064/scalar/v1`).
+Scalar: `http://localhost:5064/scalar` · OpenAPI: `http://localhost:5064/openapi/v1.json` · Detalhes no [README do backend](LittleStoreBackend/README.md).
 
 ## Funcionalidades
 

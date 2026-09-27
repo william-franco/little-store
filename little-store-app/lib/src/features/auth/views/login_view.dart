@@ -58,7 +58,7 @@ class _LoginViewState extends State<LoginView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.storefront, size: 64),
+                  const Icon(Icons.storefront_outlined, size: 64),
                   const SizedBox(height: 24),
                   TextFormField(
                     controller: _emailController,

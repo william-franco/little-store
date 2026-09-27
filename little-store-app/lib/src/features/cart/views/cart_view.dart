@@ -34,24 +34,46 @@ class _CartViewState extends State<CartView> {
             context.pop();
           },
         ),
+        actions: [
+          IconButton(
+            tooltip: 'Atualizar',
+            icon: const Icon(Icons.refresh_outlined),
+            onPressed: () => widget.cartViewModel.loadCart(),
+          ),
+        ],
       ),
-      body: StateBuilderWidget<CartViewModel, CartState>(
+      body: RefreshIndicator(
+        onRefresh: () => widget.cartViewModel.loadCart(),
+        child: StateBuilderWidget<CartViewModel, CartState>(
         viewModel: widget.cartViewModel,
         builder: (context, state) {
           return switch (state) {
-            InitialState() => const Center(child: Text('Carrinho vazio.')),
-            LoadingState() => const Center(child: CircularProgressIndicator()),
-            SuccessState(data: final cart) when cart.isEmpty => const Center(
-              child: Text('Seu carrinho está vazio.'),
+            InitialState() => ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: const [
+                SizedBox(height: 120),
+                Center(child: Text('Carrinho vazio.')),
+              ],
+            ),
+            LoadingState() => ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: const [
+                SizedBox(height: 120),
+                Center(child: CircularProgressIndicator()),
+              ],
+            ),
+            SuccessState(data: final cart) when cart.isEmpty => ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: const [
+                SizedBox(height: 120),
+                Center(child: Text('Seu carrinho está vazio.')),
+              ],
             ),
             SuccessState(data: final cart) => Column(
               children: [
                 Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: () {
-                      return widget.cartViewModel.loadCart();
-                    },
-                    child: ListView.builder(
+                  child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
                       itemCount: cart.items.length,
                       itemBuilder: (context, index) {
                         final item = cart.items[index];
@@ -69,7 +91,7 @@ class _CartViewState extends State<CartView> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.remove),
+                                  icon: const Icon(Icons.remove_outlined),
                                   onPressed: () {
                                     widget.cartViewModel.updateQuantity(
                                       itemId: item.id,
@@ -79,7 +101,7 @@ class _CartViewState extends State<CartView> {
                                 ),
                                 Text('${item.quantity}'),
                                 IconButton(
-                                  icon: const Icon(Icons.add),
+                                  icon: const Icon(Icons.add_outlined),
                                   onPressed: () {
                                     widget.cartViewModel.updateQuantity(
                                       itemId: item.id,
@@ -88,7 +110,7 @@ class _CartViewState extends State<CartView> {
                                   },
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.delete_outline),
+                                  icon: const Icon(Icons.delete_outlined),
                                   onPressed: () {
                                     widget.cartViewModel.removeItem(item.id);
                                   },
@@ -100,7 +122,6 @@ class _CartViewState extends State<CartView> {
                       },
                     ),
                   ),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
@@ -133,23 +154,25 @@ class _CartViewState extends State<CartView> {
                 ),
               ],
             ),
-            ErrorState(error: final error) => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Erro: ${error.message}'),
-                  const SizedBox(height: 16),
-                  FilledButton(
+            ErrorState(error: final error) => ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                const SizedBox(height: 120),
+                Center(child: Text('Erro: ${error.message}')),
+                const SizedBox(height: 16),
+                Center(
+                  child: FilledButton(
                     onPressed: () {
                       widget.cartViewModel.loadCart();
                     },
                     child: const Text('Tentar novamente'),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           };
         },
+      ),
       ),
     );
   }

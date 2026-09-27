@@ -37,11 +37,7 @@ dotnet run
 
 ## Accessing
 
-API: http://localhost:5000/api
-
-OpenAPI (docs): http://localhost:5000/openapi/v1.json
-
-Scalar UI: http://localhost:5000/scalar
+API: http://localhost:5064/api/v1 · OpenAPI: http://localhost:5064/openapi/v1.json · Scalar: http://localhost:5064/scalar
 
 
 ## Examples of commits

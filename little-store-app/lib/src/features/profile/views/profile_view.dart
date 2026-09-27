@@ -101,15 +101,15 @@ class _ProfileViewState extends State<ProfileView> {
                   ListTile(
                     leading: const Icon(Icons.receipt_long_outlined),
                     title: const Text('Minhas compras'),
-                    trailing: const Icon(Icons.chevron_right),
+                    trailing: const Icon(Icons.chevron_right_outlined),
                     onTap: () {
                       context.push(OrderRoutes.orders);
                     },
                   ),
                   ListTile(
-                    leading: const Icon(Icons.favorite_outline),
+                    leading: const Icon(Icons.favorite_outlined),
                     title: const Text('Favoritos'),
-                    trailing: const Icon(Icons.chevron_right),
+                    trailing: const Icon(Icons.chevron_right_outlined),
                     onTap: () {
                       context.push(FavoriteRoutes.favorites);
                     },

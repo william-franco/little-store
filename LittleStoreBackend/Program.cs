@@ -23,6 +23,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                if (HttpMethods.IsOptions(context.Request.Method))
+                {
+                    context.NoResult();
+                }
+                return Task.CompletedTask;
+            }
+        };
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -41,7 +52,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
-        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+        policy.SetIsOriginAllowed(_ => true)
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 });
 
 builder.Services.AddOpenApi();
@@ -65,9 +78,11 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
+var apiV1 = app.MapGroup("/api/v1");
+
 // --- Auth ---
 
-app.MapPost("/auth/register", async (RegisterRequest request, AppDbContext db) =>
+apiV1.MapPost("/auth/register", async (RegisterRequest request, AppDbContext db) =>
 {
     if (string.IsNullOrWhiteSpace(request.Name) ||
         string.IsNullOrWhiteSpace(request.Email) ||
@@ -99,7 +114,7 @@ app.MapPost("/auth/register", async (RegisterRequest request, AppDbContext db) =
 .WithTags("Auth")
 .WithName("Register");
 
-app.MapPost("/auth/login", async (LoginRequest request, AppDbContext db) =>
+apiV1.MapPost("/auth/login", async (LoginRequest request, AppDbContext db) =>
 {
     if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
     {
@@ -119,7 +134,7 @@ app.MapPost("/auth/login", async (LoginRequest request, AppDbContext db) =>
 .WithTags("Auth")
 .WithName("Login");
 
-app.MapPost("/auth/refresh", async (RefreshRequest request, AppDbContext db) =>
+apiV1.MapPost("/auth/refresh", async (RefreshRequest request, AppDbContext db) =>
 {
     if (string.IsNullOrWhiteSpace(request.RefreshToken))
     {
@@ -144,7 +159,7 @@ app.MapPost("/auth/refresh", async (RefreshRequest request, AppDbContext db) =>
 .WithTags("Auth")
 .WithName("Refresh");
 
-app.MapPost("/auth/logout", async (RefreshRequest request, AppDbContext db) =>
+apiV1.MapPost("/auth/logout", async (RefreshRequest request, AppDbContext db) =>
 {
     if (string.IsNullOrWhiteSpace(request.RefreshToken))
     {
@@ -163,7 +178,7 @@ app.MapPost("/auth/logout", async (RefreshRequest request, AppDbContext db) =>
 .WithTags("Auth")
 .WithName("Logout");
 
-app.MapGet("/auth/me", async (ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapGet("/auth/me", async (ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -179,7 +194,7 @@ app.MapGet("/auth/me", async (ClaimsPrincipal user, AppDbContext db) =>
 
 // --- Products ---
 
-app.MapGet("/products", async (string? search, AppDbContext db) =>
+apiV1.MapGet("/products", async (string? search, AppDbContext db) =>
 {
     var query = db.Products.AsQueryable();
     if (!string.IsNullOrWhiteSpace(search))
@@ -197,7 +212,7 @@ app.MapGet("/products", async (string? search, AppDbContext db) =>
 .WithTags("Products")
 .WithName("ListProducts");
 
-app.MapGet("/products/{id:int}", async (int id, AppDbContext db) =>
+apiV1.MapGet("/products/{id:int}", async (int id, AppDbContext db) =>
 {
     var product = await db.Products.FindAsync(id);
     return product is null ? Results.NotFound() : Results.Ok(ProductDto.FromEntity(product));
@@ -206,7 +221,7 @@ app.MapGet("/products/{id:int}", async (int id, AppDbContext db) =>
 .WithTags("Products")
 .WithName("GetProduct");
 
-app.MapPost("/products", async (ProductRequest request, AppDbContext db) =>
+apiV1.MapPost("/products", async (ProductRequest request, AppDbContext db) =>
 {
     if (string.IsNullOrWhiteSpace(request.Name))
     {
@@ -225,13 +240,13 @@ app.MapPost("/products", async (ProductRequest request, AppDbContext db) =>
 
     db.Products.Add(product);
     await db.SaveChangesAsync();
-    return Results.Created($"/products/{product.Id}", ProductDto.FromEntity(product));
+    return Results.Created($"/api/v1/products/{product.Id}", ProductDto.FromEntity(product));
 })
 .RequireAuthorization()
 .WithTags("Products")
 .WithName("CreateProduct");
 
-app.MapPut("/products/{id:int}", async (int id, ProductRequest request, AppDbContext db) =>
+apiV1.MapPut("/products/{id:int}", async (int id, ProductRequest request, AppDbContext db) =>
 {
     var product = await db.Products.FindAsync(id);
     if (product is null) return Results.NotFound();
@@ -253,7 +268,7 @@ app.MapPut("/products/{id:int}", async (int id, ProductRequest request, AppDbCon
 .WithTags("Products")
 .WithName("UpdateProduct");
 
-app.MapDelete("/products/{id:int}", async (int id, AppDbContext db) =>
+apiV1.MapDelete("/products/{id:int}", async (int id, AppDbContext db) =>
 {
     var product = await db.Products.FindAsync(id);
     if (product is null) return Results.NotFound();
@@ -268,7 +283,7 @@ app.MapDelete("/products/{id:int}", async (int id, AppDbContext db) =>
 
 // --- Cart ---
 
-app.MapGet("/cart", async (ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapGet("/cart", async (ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -288,7 +303,7 @@ app.MapGet("/cart", async (ClaimsPrincipal user, AppDbContext db) =>
 .WithTags("Cart")
 .WithName("GetCart");
 
-app.MapPost("/cart/items", async (AddCartItemRequest request, ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapPost("/cart/items", async (AddCartItemRequest request, ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -324,13 +339,13 @@ app.MapPost("/cart/items", async (AddCartItemRequest request, ClaimsPrincipal us
     await db.SaveChangesAsync();
     await db.Entry(item).Reference(c => c.Product).LoadAsync();
 
-    return Results.Created($"/cart/items/{item.Id}", CartItemDto.FromEntity(item));
+    return Results.Created($"/api/v1/cart/items/{item.Id}", CartItemDto.FromEntity(item));
 })
 .RequireAuthorization()
 .WithTags("Cart")
 .WithName("AddCartItem");
 
-app.MapPut("/cart/items/{id:int}", async (int id, UpdateCartItemRequest request, ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapPut("/cart/items/{id:int}", async (int id, UpdateCartItemRequest request, ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -355,7 +370,7 @@ app.MapPut("/cart/items/{id:int}", async (int id, UpdateCartItemRequest request,
 .WithTags("Cart")
 .WithName("UpdateCartItem");
 
-app.MapDelete("/cart/items/{id:int}", async (int id, ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapDelete("/cart/items/{id:int}", async (int id, ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -371,7 +386,7 @@ app.MapDelete("/cart/items/{id:int}", async (int id, ClaimsPrincipal user, AppDb
 .WithTags("Cart")
 .WithName("RemoveCartItem");
 
-app.MapDelete("/cart", async (ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapDelete("/cart", async (ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -387,7 +402,7 @@ app.MapDelete("/cart", async (ClaimsPrincipal user, AppDbContext db) =>
 
 // --- Orders ---
 
-app.MapGet("/orders", async (ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapGet("/orders", async (ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -403,7 +418,7 @@ app.MapGet("/orders", async (ClaimsPrincipal user, AppDbContext db) =>
 .WithTags("Orders")
 .WithName("ListOrders");
 
-app.MapGet("/orders/{id:int}", async (int id, ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapGet("/orders/{id:int}", async (int id, ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -420,7 +435,7 @@ app.MapGet("/orders/{id:int}", async (int id, ClaimsPrincipal user, AppDbContext
 .WithTags("Orders")
 .WithName("GetOrder");
 
-app.MapPost("/orders/checkout", async (ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapPost("/orders/checkout", async (ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -467,7 +482,7 @@ app.MapPost("/orders/checkout", async (ClaimsPrincipal user, AppDbContext db) =>
 
 // --- Favorites ---
 
-app.MapGet("/favorites", async (ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapGet("/favorites", async (ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -484,7 +499,7 @@ app.MapGet("/favorites", async (ClaimsPrincipal user, AppDbContext db) =>
 .WithTags("Favorites")
 .WithName("ListFavorites");
 
-app.MapGet("/favorites/{productId:int}", async (int productId, ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapGet("/favorites/{productId:int}", async (int productId, ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -498,7 +513,7 @@ app.MapGet("/favorites/{productId:int}", async (int productId, ClaimsPrincipal u
 .WithTags("Favorites")
 .WithName("CheckFavorite");
 
-app.MapPost("/favorites", async (AddFavoriteRequest request, ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapPost("/favorites", async (AddFavoriteRequest request, ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();
@@ -524,13 +539,13 @@ app.MapPost("/favorites", async (AddFavoriteRequest request, ClaimsPrincipal use
     db.Favorites.Add(favorite);
     await db.SaveChangesAsync();
 
-    return Results.Created($"/favorites/{request.ProductId}", ProductDto.FromEntity(product));
+    return Results.Created($"/api/v1/favorites/{request.ProductId}", ProductDto.FromEntity(product));
 })
 .RequireAuthorization()
 .WithTags("Favorites")
 .WithName("AddFavorite");
 
-app.MapDelete("/favorites/{productId:int}", async (int productId, ClaimsPrincipal user, AppDbContext db) =>
+apiV1.MapDelete("/favorites/{productId:int}", async (int productId, ClaimsPrincipal user, AppDbContext db) =>
 {
     var userId = GetUserId(user);
     if (userId is null) return Results.Unauthorized();

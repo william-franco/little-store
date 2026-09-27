@@ -122,7 +122,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
           else
             IconButton(
               icon: Icon(
-                _isFavorite ? Icons.favorite : Icons.favorite_border,
+                _isFavorite ? Icons.favorite : Icons.favorite_outlined,
                 color: _isFavorite ? Colors.red : null,
               ),
               onPressed: _togglingFavorite

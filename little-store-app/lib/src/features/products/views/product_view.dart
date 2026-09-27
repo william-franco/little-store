@@ -62,6 +62,15 @@ class _ProductViewState extends State<ProductView> {
       appBar: AppBar(
         title: const Text('Produtos'),
         actions: [
+          IconButton(
+            tooltip: 'Atualizar',
+            icon: const Icon(Icons.refresh_outlined),
+            onPressed: () {
+              widget.productViewModel.loadProducts(
+                search: _searchController.text,
+              );
+            },
+          ),
           ListenableBuilder(
             listenable: widget.cartViewModel,
             builder: (context, _) {
@@ -79,7 +88,7 @@ class _ProductViewState extends State<ProductView> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.person_outline),
+            icon: const Icon(Icons.person_outlined),
             onPressed: () {
               context.push(ProfileRoutes.profile);
             },
@@ -93,7 +102,7 @@ class _ProductViewState extends State<ProductView> {
             child: SearchBar(
               controller: _searchController,
               hintText: 'Buscar produtos...',
-              leading: const Icon(Icons.search),
+              leading: const Icon(Icons.search_outlined),
               onChanged: (value) {
                 widget.productViewModel.searchProducts(value);
               },
