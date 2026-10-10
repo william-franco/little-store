@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented in this file.
 
+## 2026-10-10
+
+- Commit: Updated Flutter SDK and dependencies.
+  - Refreshed dependency versions and related build configuration to keep the project current.
+
 ## 2026-09-26
 
 - Commit: Versioned API at /api/v1 with CORS, refresh UI and outlined icons.
