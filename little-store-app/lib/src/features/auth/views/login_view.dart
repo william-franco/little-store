@@ -93,7 +93,9 @@ class _LoginViewState extends State<LoginView> {
                     const SizedBox(height: 16),
                     Text(
                       state.error.message,
-                      style: TextStyle(color: Theme.of(context).colorScheme.error),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
                     ),
                   ],
                   const SizedBox(height: 24),

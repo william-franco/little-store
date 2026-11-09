@@ -10,7 +10,10 @@ typedef ProductActionResult = ResultPattern<void, ProductException>;
 
 abstract interface class ProductRepository {
   Future<ProductsResult> findProducts({String? search});
-  Future<ProductActionResult> addToCart({required int productId, int quantity = 1});
+  Future<ProductActionResult> addToCart({
+    required int productId,
+    int quantity = 1,
+  });
 }
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -45,7 +48,9 @@ class ProductRepositoryImpl implements ProductRepository {
       }
 
       return ErrorResult(
-        error: ProductException('Falha ao buscar produtos: ${result.statusCode}'),
+        error: ProductException(
+          'Falha ao buscar produtos: ${result.statusCode}',
+        ),
       );
     } catch (error) {
       return ErrorResult(error: ProductException('Erro inesperado: $error'));
@@ -74,7 +79,9 @@ class ProductRepositoryImpl implements ProductRepository {
       }
 
       return ErrorResult(
-        error: ProductException('Falha ao adicionar ao carrinho: ${result.statusCode}'),
+        error: ProductException(
+          'Falha ao adicionar ao carrinho: ${result.statusCode}',
+        ),
       );
     } catch (error) {
       return ErrorResult(error: ProductException('Erro inesperado: $error'));

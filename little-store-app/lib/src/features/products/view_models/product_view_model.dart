@@ -50,10 +50,7 @@ class ProductViewModelImpl extends _ViewModel implements ProductViewModel {
   @override
   Future<bool> addToCart(int productId) async {
     final result = await productRepository.addToCart(productId: productId);
-    return result.fold(
-      onSuccess: (_) => true,
-      onError: (_) => false,
-    );
+    return result.fold(onSuccess: (_) => true, onError: (_) => false);
   }
 
   void _emit(ProductsState newState) {

@@ -39,7 +39,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
       }
 
       return ErrorResult(
-        error: ProfileException('Falha ao carregar perfil: ${result.statusCode}'),
+        error: ProfileException(
+          'Falha ao carregar perfil: ${result.statusCode}',
+        ),
       );
     } catch (error) {
       return ErrorResult(error: ProfileException('Erro inesperado: $error'));

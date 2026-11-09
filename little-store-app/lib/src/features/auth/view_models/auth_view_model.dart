@@ -16,10 +16,7 @@ abstract interface class AuthViewModel extends _ViewModel {
     required String password,
   });
 
-  Future<void> login({
-    required String email,
-    required String password,
-  });
+  Future<void> login({required String email, required String password});
 
   Future<void> logout();
 }
@@ -48,15 +45,9 @@ class AuthViewModelImpl extends _ViewModel implements AuthViewModel {
   }
 
   @override
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> login({required String email, required String password}) async {
     _emit(LoadingState());
-    final result = await authRepository.login(
-      email: email,
-      password: password,
-    );
+    final result = await authRepository.login(email: email, password: password);
     _emitResult(result);
   }
 

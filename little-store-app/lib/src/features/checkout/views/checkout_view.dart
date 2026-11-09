@@ -33,10 +33,10 @@ class _CheckoutViewState extends State<CheckoutView> {
 
     if (completeState is SuccessState<OrderSummaryModel, CheckoutException>) {
       context.push(CheckoutRoutes.confirmation, extra: completeState.data);
-    } else if (completeState is ErrorState<OrderSummaryModel, CheckoutException>) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(completeState.error.message)),
-      );
+    } else if (completeState
+        is ErrorState<OrderSummaryModel, CheckoutException>) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(completeState.error.message)));
     }
   }
 

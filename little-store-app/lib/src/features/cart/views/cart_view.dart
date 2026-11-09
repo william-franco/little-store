@@ -45,35 +45,35 @@ class _CartViewState extends State<CartView> {
       body: RefreshIndicator(
         onRefresh: () => widget.cartViewModel.loadCart(),
         child: StateBuilderWidget<CartViewModel, CartState>(
-        viewModel: widget.cartViewModel,
-        builder: (context, state) {
-          return switch (state) {
-            InitialState() => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: const [
-                SizedBox(height: 120),
-                Center(child: Text('Carrinho vazio.')),
-              ],
-            ),
-            LoadingState() => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: const [
-                SizedBox(height: 120),
-                Center(child: CircularProgressIndicator()),
-              ],
-            ),
-            SuccessState(data: final cart) when cart.isEmpty => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: const [
-                SizedBox(height: 120),
-                Center(child: Text('Seu carrinho está vazio.')),
-              ],
-            ),
-            SuccessState(data: final cart) => Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
+          viewModel: widget.cartViewModel,
+          builder: (context, state) {
+            return switch (state) {
+              InitialState() => ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: const [
+                  SizedBox(height: 120),
+                  Center(child: Text('Carrinho vazio.')),
+                ],
+              ),
+              LoadingState() => ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: const [
+                  SizedBox(height: 120),
+                  Center(child: CircularProgressIndicator()),
+                ],
+              ),
+              SuccessState(data: final cart) when cart.isEmpty => ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: const [
+                  SizedBox(height: 120),
+                  Center(child: Text('Seu carrinho está vazio.')),
+                ],
+              ),
+              SuccessState(data: final cart) => Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
                       itemCount: cart.items.length,
                       itemBuilder: (context, index) {
                         final item = cart.items[index];
@@ -122,57 +122,57 @@ class _CartViewState extends State<CartView> {
                       },
                     ),
                   ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Total',
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                          Text(
-                            cart.formattedTotal,
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        width: double.infinity,
-                        child: FilledButton(
-                          onPressed: () {
-                            context.push(CheckoutRoutes.checkout);
-                          },
-                          child: const Text('Ir para checkout'),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Total',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            Text(
+                              cart.formattedTotal,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          child: FilledButton(
+                            onPressed: () {
+                              context.push(CheckoutRoutes.checkout);
+                            },
+                            child: const Text('Ir para checkout'),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            ErrorState(error: final error) => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: [
-                const SizedBox(height: 120),
-                Center(child: Text('Erro: ${error.message}')),
-                const SizedBox(height: 16),
-                Center(
-                  child: FilledButton(
-                    onPressed: () {
-                      widget.cartViewModel.loadCart();
-                    },
-                    child: const Text('Tentar novamente'),
+                ],
+              ),
+              ErrorState(error: final error) => ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  const SizedBox(height: 120),
+                  Center(child: Text('Erro: ${error.message}')),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: FilledButton(
+                      onPressed: () {
+                        widget.cartViewModel.loadCart();
+                      },
+                      child: const Text('Tentar novamente'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          };
-        },
-      ),
+                ],
+              ),
+            };
+          },
+        ),
       ),
     );
   }

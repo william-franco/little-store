@@ -29,7 +29,9 @@ class CheckoutRepositoryImpl implements CheckoutRepository {
       await connectionService.checkConnection();
 
       if (!connectionService.isConnected) {
-        return ErrorResult(error: CheckoutException('Dispositivo sem conexão.'));
+        return ErrorResult(
+          error: CheckoutException('Dispositivo sem conexão.'),
+        );
       }
 
       final result = await httpService.getData(path: ApiConstant.cart);
@@ -40,7 +42,9 @@ class CheckoutRepositoryImpl implements CheckoutRepository {
       }
 
       return ErrorResult(
-        error: CheckoutException('Falha ao carregar resumo: ${result.statusCode}'),
+        error: CheckoutException(
+          'Falha ao carregar resumo: ${result.statusCode}',
+        ),
       );
     } catch (error) {
       return ErrorResult(error: CheckoutException('Erro inesperado: $error'));
@@ -53,7 +57,9 @@ class CheckoutRepositoryImpl implements CheckoutRepository {
       await connectionService.checkConnection();
 
       if (!connectionService.isConnected) {
-        return ErrorResult(error: CheckoutException('Dispositivo sem conexão.'));
+        return ErrorResult(
+          error: CheckoutException('Dispositivo sem conexão.'),
+        );
       }
 
       final result = await httpService.postData(

@@ -7,7 +7,8 @@ import 'package:little_store_app/src/features/checkout/models/order_summary_mode
 import 'package:little_store_app/src/features/checkout/repositories/checkout_repository.dart';
 
 typedef CheckoutPreviewState = StatePattern<CartModel, CheckoutException>;
-typedef CheckoutCompleteState = StatePattern<OrderSummaryModel, CheckoutException>;
+typedef CheckoutCompleteState =
+    StatePattern<OrderSummaryModel, CheckoutException>;
 
 typedef _PreviewViewModel = StateManagement<CheckoutPreviewState>;
 
@@ -17,7 +18,8 @@ abstract interface class CheckoutViewModel extends _PreviewViewModel {
   Future<void> finalizeCheckout();
 }
 
-class CheckoutViewModelImpl extends _PreviewViewModel implements CheckoutViewModel {
+class CheckoutViewModelImpl extends _PreviewViewModel
+    implements CheckoutViewModel {
   final CheckoutRepository checkoutRepository;
   CheckoutCompleteState _completeState = InitialState();
 

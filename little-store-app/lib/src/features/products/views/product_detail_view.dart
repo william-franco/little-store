@@ -185,7 +185,9 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                         _toggleFavorite();
                       },
                 child: Text(
-                  _isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos',
+                  _isFavorite
+                      ? 'Remover dos favoritos'
+                      : 'Adicionar aos favoritos',
                 ),
               ),
             ),

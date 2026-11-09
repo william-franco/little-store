@@ -42,7 +42,9 @@ class OrderRepositoryImpl implements OrderRepository {
       }
 
       return ErrorResult(
-        error: OrderException('Falha ao carregar pedidos: ${result.statusCode}'),
+        error: OrderException(
+          'Falha ao carregar pedidos: ${result.statusCode}',
+        ),
       );
     } catch (error) {
       return ErrorResult(error: OrderException('Erro inesperado: $error'));
@@ -58,7 +60,9 @@ class OrderRepositoryImpl implements OrderRepository {
         return ErrorResult(error: OrderException('Dispositivo sem conexão.'));
       }
 
-      final result = await httpService.getData(path: '${ApiConstant.orders}/$id');
+      final result = await httpService.getData(
+        path: '${ApiConstant.orders}/$id',
+      );
 
       if (result.statusCode == 200 && result.data != null) {
         final order = OrderSummaryModel.fromJson(

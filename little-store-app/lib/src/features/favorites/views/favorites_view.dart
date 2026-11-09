@@ -59,31 +59,32 @@ class _FavoritesViewState extends State<FavoritesView> {
       body: RefreshIndicator(
         onRefresh: () => widget.favoriteViewModel.loadFavorites(),
         child: StateBuilderWidget<FavoriteViewModel, FavoritesState>(
-        viewModel: widget.favoriteViewModel,
-        builder: (context, state) {
-          return switch (state) {
-            InitialState() => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: const [
-                SizedBox(height: 120),
-                Center(child: Text('Nenhum favorito.')),
-              ],
-            ),
-            LoadingState() => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: const [
-                SizedBox(height: 120),
-                Center(child: CircularProgressIndicator()),
-              ],
-            ),
-            SuccessState(data: final products) when products.isEmpty => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: const [
-                SizedBox(height: 120),
-                Center(child: Text('Você ainda não favoritou produtos.')),
-              ],
-            ),
-            SuccessState(data: final products) => ListView.builder(
+          viewModel: widget.favoriteViewModel,
+          builder: (context, state) {
+            return switch (state) {
+              InitialState() => ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: const [
+                  SizedBox(height: 120),
+                  Center(child: Text('Nenhum favorito.')),
+                ],
+              ),
+              LoadingState() => ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: const [
+                  SizedBox(height: 120),
+                  Center(child: CircularProgressIndicator()),
+                ],
+              ),
+              SuccessState(data: final products) when products.isEmpty =>
+                ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  children: const [
+                    SizedBox(height: 120),
+                    Center(child: Text('Você ainda não favoritou produtos.')),
+                  ],
+                ),
+              SuccessState(data: final products) => ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 itemCount: products.length,
                 itemBuilder: (context, index) {
@@ -109,7 +110,10 @@ class _FavoritesViewState extends State<FavoritesView> {
                             },
                           ),
                           IconButton(
-                            icon: const Icon(Icons.favorite_outlined, color: Colors.red),
+                            icon: const Icon(
+                              Icons.favorite_outlined,
+                              color: Colors.red,
+                            ),
                             onPressed: () {
                               widget.favoriteViewModel.removeFavorite(
                                 product.id,
@@ -122,25 +126,25 @@ class _FavoritesViewState extends State<FavoritesView> {
                   );
                 },
               ),
-            ErrorState(error: final error) => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: [
-                const SizedBox(height: 120),
-                Center(child: Text('Erro: ${error.message}')),
-                const SizedBox(height: 16),
-                Center(
-                  child: FilledButton(
-                    onPressed: () {
-                      widget.favoriteViewModel.loadFavorites();
-                    },
-                    child: const Text('Tentar novamente'),
+              ErrorState(error: final error) => ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  const SizedBox(height: 120),
+                  Center(child: Text('Erro: ${error.message}')),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: FilledButton(
+                      onPressed: () {
+                        widget.favoriteViewModel.loadFavorites();
+                      },
+                      child: const Text('Tentar novamente'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          };
-        },
-      ),
+                ],
+              ),
+            };
+          },
+        ),
       ),
     );
   }

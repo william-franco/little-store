@@ -43,10 +43,7 @@ class CartModel {
     final items = (json['items'] as List)
         .map((e) => CartItemModel.fromJson(e as Map<String, dynamic>))
         .toList();
-    return CartModel(
-      items: items,
-      total: (json['total'] as num).toDouble(),
-    );
+    return CartModel(items: items, total: (json['total'] as num).toDouble());
   }
 
   String get formattedTotal => 'R\$ ${total.toStringAsFixed(2)}';

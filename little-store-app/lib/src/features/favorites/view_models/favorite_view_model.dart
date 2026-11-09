@@ -43,10 +43,7 @@ class FavoriteViewModelImpl extends _ViewModel implements FavoriteViewModel {
   @override
   Future<bool> checkIsFavorite(int productId) async {
     final result = await favoriteRepository.isFavorite(productId);
-    return result.fold(
-      onSuccess: (value) => value,
-      onError: (_) => false,
-    );
+    return result.fold(onSuccess: (value) => value, onError: (_) => false);
   }
 
   @override

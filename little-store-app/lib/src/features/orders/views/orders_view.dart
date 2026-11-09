@@ -45,31 +45,31 @@ class _OrdersViewState extends State<OrdersView> {
       body: RefreshIndicator(
         onRefresh: () => widget.orderViewModel.loadOrders(),
         child: StateBuilderWidget<OrderViewModel, OrdersState>(
-        viewModel: widget.orderViewModel,
-        builder: (context, state) {
-          return switch (state) {
-            InitialState() => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: const [
-                SizedBox(height: 120),
-                Center(child: Text('Nenhum pedido.')),
-              ],
-            ),
-            LoadingState() => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: const [
-                SizedBox(height: 120),
-                Center(child: CircularProgressIndicator()),
-              ],
-            ),
-            SuccessState(data: final orders) when orders.isEmpty => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: const [
-                SizedBox(height: 120),
-                Center(child: Text('Você ainda não fez compras.')),
-              ],
-            ),
-            SuccessState(data: final orders) => ListView.builder(
+          viewModel: widget.orderViewModel,
+          builder: (context, state) {
+            return switch (state) {
+              InitialState() => ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: const [
+                  SizedBox(height: 120),
+                  Center(child: Text('Nenhum pedido.')),
+                ],
+              ),
+              LoadingState() => ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: const [
+                  SizedBox(height: 120),
+                  Center(child: CircularProgressIndicator()),
+                ],
+              ),
+              SuccessState(data: final orders) when orders.isEmpty => ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: const [
+                  SizedBox(height: 120),
+                  Center(child: Text('Você ainda não fez compras.')),
+                ],
+              ),
+              SuccessState(data: final orders) => ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 itemCount: orders.length,
                 itemBuilder: (context, index) {
@@ -95,25 +95,25 @@ class _OrdersViewState extends State<OrdersView> {
                   );
                 },
               ),
-            ErrorState(error: final error) => ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: [
-                const SizedBox(height: 120),
-                Center(child: Text('Erro: ${error.message}')),
-                const SizedBox(height: 16),
-                Center(
-                  child: FilledButton(
-                    onPressed: () {
-                      widget.orderViewModel.loadOrders();
-                    },
-                    child: const Text('Tentar novamente'),
+              ErrorState(error: final error) => ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  const SizedBox(height: 120),
+                  Center(child: Text('Erro: ${error.message}')),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: FilledButton(
+                      onPressed: () {
+                        widget.orderViewModel.loadOrders();
+                      },
+                      child: const Text('Tentar novamente'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          };
-        },
-      ),
+                ],
+              ),
+            };
+          },
+        ),
       ),
     );
   }

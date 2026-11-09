@@ -10,7 +10,10 @@ typedef CartActionResult = ResultPattern<void, CartException>;
 
 abstract interface class CartRepository {
   Future<CartResult> getCart();
-  Future<CartActionResult> updateQuantity({required int itemId, required int quantity});
+  Future<CartActionResult> updateQuantity({
+    required int itemId,
+    required int quantity,
+  });
   Future<CartActionResult> removeItem(int itemId);
 }
 
@@ -40,7 +43,9 @@ class CartRepositoryImpl implements CartRepository {
       }
 
       return ErrorResult(
-        error: CartException('Falha ao carregar carrinho: ${result.statusCode}'),
+        error: CartException(
+          'Falha ao carregar carrinho: ${result.statusCode}',
+        ),
       );
     } catch (error) {
       return ErrorResult(error: CartException('Erro inesperado: $error'));

@@ -33,7 +33,9 @@ class _OrderDetailViewState extends State<OrderDetailView> {
       _error = null;
     });
 
-    final result = await locator<OrderRepository>().findOrderById(widget.orderId);
+    final result = await locator<OrderRepository>().findOrderById(
+      widget.orderId,
+    );
 
     result.fold(
       onSuccess: (value) {

@@ -46,7 +46,10 @@ class CartViewModelImpl extends _ViewModel implements CartViewModel {
   }
 
   @override
-  Future<void> updateQuantity({required int itemId, required int quantity}) async {
+  Future<void> updateQuantity({
+    required int itemId,
+    required int quantity,
+  }) async {
     if (quantity <= 0) {
       await removeItem(itemId);
       return;

@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:little_store_app/src/common/services/connection_service.dart';
 import 'package:little_store_app/src/common/services/http_service.dart';
 import 'package:little_store_app/src/common/services/storage_service.dart';
+import 'package:little_store_app/src/common/services/url_launcher_service.dart';
 import 'package:little_store_app/src/features/auth/repositories/auth_repository.dart';
 import 'package:little_store_app/src/features/auth/view_models/auth_view_model.dart';
 import 'package:little_store_app/src/features/cart/repositories/cart_repository.dart';
@@ -22,6 +23,9 @@ import 'package:little_store_app/src/features/settings/view_models/setting_view_
 final locator = GetIt.instance;
 
 void dependencyInjector() {
+  locator.registerLazySingleton<UrlLauncherService>(
+    () => UrlLauncherServiceImpl(),
+  );
   _registerServices();
   _registerAuth();
   _registerProfile();
@@ -134,7 +138,10 @@ void _registerFavorites() {
 
 void _registerSettings() {
   locator.registerLazySingleton<SettingRepository>(
-    () => SettingRepositoryImpl(storageService: locator<StorageService>()),
+    () => SettingRepositoryImpl(
+      storageService: locator<StorageService>(),
+      urlLauncherService: locator<UrlLauncherService>(),
+    ),
   );
   locator.registerLazySingleton<SettingViewModel>(
     () => SettingViewModelImpl(settingRepository: locator<SettingRepository>()),

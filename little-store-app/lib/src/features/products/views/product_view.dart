@@ -155,48 +155,50 @@ class _ProductViewState extends State<ProductView> {
                             );
                           },
                           child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  product.name,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.titleMedium,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 4),
-                                Expanded(
-                                  child: Text(
-                                    product.description,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodySmall,
-                                    maxLines: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    product.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium,
+                                    maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
-                                Text(
-                                  product.formattedPrice,
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                ),
-                                const SizedBox(height: 8),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: FilledButton.tonal(
-                                    onPressed: () {
-                                      _addToCart(product.id);
-                                    },
-                                    child: const Text('Adicionar'),
+                                  const SizedBox(height: 4),
+                                  Expanded(
+                                    child: Text(
+                                      product.description,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    product.formattedPrice,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: FilledButton.tonal(
+                                      onPressed: () {
+                                        _addToCart(product.id);
+                                      },
+                                      child: const Text('Adicionar'),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
                         );
                       },
                     ),

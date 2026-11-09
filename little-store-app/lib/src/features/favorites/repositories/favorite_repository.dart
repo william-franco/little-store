@@ -31,7 +31,9 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
       await connectionService.checkConnection();
 
       if (!connectionService.isConnected) {
-        return ErrorResult(error: FavoriteException('Dispositivo sem conexão.'));
+        return ErrorResult(
+          error: FavoriteException('Dispositivo sem conexão.'),
+        );
       }
 
       final result = await httpService.getData(path: ApiConstant.favorites);
@@ -59,7 +61,9 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
       await connectionService.checkConnection();
 
       if (!connectionService.isConnected) {
-        return ErrorResult(error: FavoriteException('Dispositivo sem conexão.'));
+        return ErrorResult(
+          error: FavoriteException('Dispositivo sem conexão.'),
+        );
       }
 
       final result = await httpService.getData(
@@ -87,7 +91,9 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
       await connectionService.checkConnection();
 
       if (!connectionService.isConnected) {
-        return ErrorResult(error: FavoriteException('Dispositivo sem conexão.'));
+        return ErrorResult(
+          error: FavoriteException('Dispositivo sem conexão.'),
+        );
       }
 
       final result = await httpService.postData(
@@ -102,9 +108,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
       }
 
       return ErrorResult(
-        error: FavoriteException(
-          'Falha ao favoritar: ${result.statusCode}',
-        ),
+        error: FavoriteException('Falha ao favoritar: ${result.statusCode}'),
       );
     } catch (error) {
       return ErrorResult(error: FavoriteException('Erro inesperado: $error'));
@@ -117,7 +121,9 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
       await connectionService.checkConnection();
 
       if (!connectionService.isConnected) {
-        return ErrorResult(error: FavoriteException('Dispositivo sem conexão.'));
+        return ErrorResult(
+          error: FavoriteException('Dispositivo sem conexão.'),
+        );
       }
 
       final result = await httpService.deleteData(
