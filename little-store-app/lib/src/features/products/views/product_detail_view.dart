@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:little_store_app/src/features/cart/view_models/cart_view_model.dart';
 import 'package:little_store_app/src/features/favorites/view_models/favorite_view_model.dart';

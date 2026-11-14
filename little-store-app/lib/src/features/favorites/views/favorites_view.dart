@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:little_store_app/src/common/dependency_injectors/dependency_injector.dart';
 import 'package:little_store_app/src/common/patterns/state_pattern.dart';
