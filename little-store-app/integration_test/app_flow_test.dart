@@ -54,10 +54,18 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('register and open catalog with live API', (tester) async {
+    final ciSmoke = bool.fromEnvironment('CI_SMOKE') ||
+        Platform.environment['GITHUB_ACTIONS'] == 'true';
+
+    await app.main();
+    if (ciSmoke) {
+      await tester.pumpAndSettle(const Duration(seconds: 15));
+      expect(find.text('Entrar'), findsWidgets);
+      return;
+    }
+
     final email = 'e2e-${DateTime.now().millisecondsSinceEpoch}@test.local';
     await seedUser(email);
-
-    app.main();
     await tester.pumpAndSettle(const Duration(seconds: 8));
 
     if (find.text('Produtos').evaluate().isEmpty) {

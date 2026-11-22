@@ -119,6 +119,15 @@ flowchart TD
 5. Consulte Minhas compras e Favoritos no perfil
 6. Saia quando desejar
 
+## E2E Flutter (Linux)
+
+- **CI:** o job Flutter roda `integration_test` em smoke (`CI_SMOKE`) com `xvfb`, sem subir a API (integração HTTP fica no job `backend-integration` com `dotnet test`).
+- **Local com API:** na pasta `flutter-apps`, suba o backend (`./flutter-backend-kiri.sh up little-store` ou `dotnet run` em `LittleStoreBackend`) e execute em `little-store-app`:
+
+```bash
+flutter test integration_test -d linux
+```
+
 ## Examples of commits
 
 ```
