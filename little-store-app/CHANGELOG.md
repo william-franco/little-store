@@ -5,6 +5,8 @@ All notable changes to this project are documented in this file.
 ## 2026-11-22
 
 - `Future<void> main()` so integration_test can await startup without analyze errors.
+- Commit: Fix Future<void> main for CI flutter analyze.
+  - integration_test can await app.main() without await_only_futures / use_of_void_result.
 - Linux CI E2E runs under xvfb-run for headless GitHub Actions runners.
 - Flutter CI E2E smoke (CI_SMOKE); await app.main() in integration_test.
 - Full-stack Flutter CI uses CI_SMOKE (login screen only); live API E2E is local with backend up.
