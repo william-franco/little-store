@@ -43,6 +43,10 @@ A API REST sobe em `http://localhost:5064/api/v1`. O banco é criado/atualizado 
 
 Para migrations, pacotes e documentação interativa (Scalar), consulte [`LittleStoreBackend/README.md`](LittleStoreBackend/README.md).
 
+#### Backend com Kiri (Docker)
+
+Alternativa ao `dotnet run`: com [Kiri](https://kiri.dev) ativo, em `LittleStoreBackend` execute `kiri compose up -d` (API em **http://localhost:5064/api/v1**). Na pasta do monorepo `flutter-apps`: `./flutter-backend-kiri.sh up little-store`. Ver [Run with Kiri (Docker)](LittleStoreBackend/README.md#run-with-kiri-docker) no README do backend.
+
 ### 2. App Flutter
 
 ```bash

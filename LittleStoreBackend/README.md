@@ -1,7 +1,8 @@
-# Pedal Track Backend
+# Little Store Backend
 
-Backend para o projeto PedalTrack.
+Backend para o projeto Little Store: API .NET com autenticação JWT + refresh token, catálogo de produtos, carrinho, pedidos e favoritos (SQLite + EF Core).
 
+Execução local com `dotnet run` ou em container via **Kiri** (seção [Run with Kiri (Docker)](#run-with-kiri-docker) abaixo).
 
 ## Libraries
 
@@ -36,25 +37,31 @@ dotnet run
 
 ## Integration tests (E2E)
 
+Testes de integração da API (xUnit + `WebApplicationFactory`, SQLite temporário):
+
 ```
 cd LittleStoreBackend.IntegrationTests
 dotnet test --configuration Release
 ```
 
-Monorepo: `./flutter-backend-e2e.sh test little-store` · smoke: `./flutter-backend-e2e.sh smoke little-store`.
+No monorepo `flutter-apps`: `./flutter-backend-e2e.sh test little-store` (só .NET) ou `./flutter-backend-e2e.sh smoke little-store` (container + HTTP).
 
 ## Run with Kiri (Docker)
 
-Com o Kiri ativo, na pasta deste backend:
+Com o [Kiri](https://kiri.dev) ativo (no Linux: `sudo kiri daemon` ou app aberto), na pasta deste backend:
 
 ```
 kiri compose build
 kiri compose up -d
 ```
 
-Ou: `./flutter-backend-kiri.sh up little-store` (monorepo `flutter-apps`).
+Ou a partir da raiz do monorepo `flutter-apps`: `./flutter-backend-kiri.sh up little-store`.
 
-SQLite em volume; `Development` com Scalar. Encerrar: `kiri compose down`.
+O SQLite persiste no volume Docker; ambiente `Development` (Scalar/OpenAPI habilitados). Portas no host permanecem as mesmas abaixo.
+
+Para encerrar: `kiri compose down` ou `./flutter-backend-kiri.sh down little-store`.
+
+Opcional: `Jwt__Key` e demais chaves podem ser sobrescritas via `environment` no `compose.yaml`.
 
 ## Accessing
 
