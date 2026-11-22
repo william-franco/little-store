@@ -829,3 +829,5 @@ record OrderDetailDto(int Id, decimal Total, string Status, DateTime CreatedAt, 
     public static OrderDetailDto FromEntity(Order order) =>
         new(order.Id, order.Total, order.Status, order.CreatedAt, order.Items.Select(OrderItemDto.FromEntity).ToList());
 }
+
+public partial class Program;

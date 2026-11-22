@@ -34,6 +34,27 @@ dotnet build
 dotnet run
 ```
 
+## Integration tests (E2E)
+
+```
+cd LittleStoreBackend.IntegrationTests
+dotnet test --configuration Release
+```
+
+Monorepo: `./flutter-backend-e2e.sh test little-store` · smoke: `./flutter-backend-e2e.sh smoke little-store`.
+
+## Run with Kiri (Docker)
+
+Com o Kiri ativo, na pasta deste backend:
+
+```
+kiri compose build
+kiri compose up -d
+```
+
+Ou: `./flutter-backend-kiri.sh up little-store` (monorepo `flutter-apps`).
+
+SQLite em volume; `Development` com Scalar. Encerrar: `kiri compose down`.
 
 ## Accessing
 

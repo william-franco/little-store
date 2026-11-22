@@ -1,0 +1,14 @@
+services:
+  api:
+    build: .
+    image: little-store-backend:local
+    ports:
+      - "5064:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Default: Data Source=/data/little_store.db
+    volumes:
+      - little_store_sqlite:/data
+
+volumes:
+  little_store_sqlite:
