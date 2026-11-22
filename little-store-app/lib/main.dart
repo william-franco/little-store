@@ -5,7 +5,7 @@ import 'package:little_store_app/src/common/state_management/state_management.da
 import 'package:little_store_app/src/features/settings/models/setting_model.dart';
 import 'package:little_store_app/src/features/settings/view_models/setting_view_model.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   dependencyInjector();
   await initDependencies();
